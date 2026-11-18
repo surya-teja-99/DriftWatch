@@ -121,7 +121,3 @@ tests/test_drift.py
 examples/demo.py
 .github/workflows/ci.yml
 ```
-
-## License
-
-MIT — see [LICENSE](LICENSE).
