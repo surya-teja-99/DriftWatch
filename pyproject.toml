@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "driftwatch"
+version = "0.1.0"
+description = "Lightweight ML drift & data-quality monitor for tabular models"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Surya Teja" }]
+keywords = ["drift", "ml-monitoring", "data-quality", "psi", "kolmogorov-smirnov"]
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+driftwatch = "driftwatch.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
