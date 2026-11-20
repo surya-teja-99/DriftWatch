@@ -2,10 +2,11 @@
 
 Usage::
 
+    driftwatch --version
     driftwatch generate --kind reference --out data/reference.csv
     driftwatch generate --kind current --drift 0.6 --out data/current.csv
     driftwatch compare --reference data/reference.csv --current data/current.csv
-    driftwatch report --reference data/reference.csv --current data/current.csv \\
+    driftwatch report --reference data/reference.csv --current data/current.csv \
         --out report.md
 """
 
@@ -16,6 +17,7 @@ import json
 import sys
 from pathlib import Path
 
+from . import __version__
 from .core import compare_datasets
 from .data import (
     ALL_FEATURES,
@@ -61,6 +63,9 @@ def _print_summary(comparison: dict) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="driftwatch", description="Lightweight ML drift & data-quality monitor."
+    )
+    parser.add_argument(
+        "--version", action="version", version=f"%(prog)s {__version__}"
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
