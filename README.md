@@ -109,6 +109,41 @@ Tests cover PSI (identical ≈ 0, no drift < 0.05, strong drift > 0.25),
 KS, missing-rate / range / unseen-category checks, end-to-end
 comparison on synthetic data, and report generation.
 
+## Troubleshooting & FAQ
+
+**"Missing feature(s) in input files"**
+The two CSVs must contain the same columns, with the same names and
+units. Check the header row — a renamed or dropped column is the usual
+cause — then regenerate both files from the same pipeline.
+
+**Everything is "significant" on the first run**
+That usually means the reference and current files cover different
+time windows, populations, or units (for example, charges in dollars
+in one file and cents in the other). Compare like with like first,
+then look at the per-feature table to see which feature moved most.
+
+**PSI is 0 for a feature that clearly changed**
+A (near-)constant feature has too few distinct values to bin, so PSI
+falls back to a single split and can report 0. Check the KS value and
+the raw values for that feature instead — KS needs no binning.
+
+**A sudden missing-rate jump**
+Treat this as a pipeline bug first, not drift: a broken join, a
+renamed source column, or a failed ingest usually shows up as missing
+data before it shows up as drift. Fix the source, re-run
+`driftwatch report`, and confirm the verdict clears.
+
+**"PSI needs non-empty reference and current samples" / "KS needs non-empty ..."**
+One of the inputs was empty after dropping missing values. Check that
+the CSVs are not empty and that the feature column is not entirely
+missing in either file.
+
+**What should I do for a "moderate" verdict?**
+Investigate that feature — check for a pricing change, a new plan,
+or a new customer segment — and re-check on a fresh window of data
+before retraining. For "significant", retrain, re-validate, or roll
+back, and keep the report as evidence of what changed.
+
 ## Project layout
 
 ```
